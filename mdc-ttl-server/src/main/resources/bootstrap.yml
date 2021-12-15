@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: mdc-ttl-server
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+  profiles:
+    active: dev
+
+#logging:
+#  file: log/myspringboot.log
+#  #file: /Users/wang/Downloads/myspringboot.log
+#  pattern:
+#    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - traceId:[%X{mdc_trace_id}] - %msg%n'
+##    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} %X{mdc_trace_id} - %msg%n'
+##    console: '%d{yyyy-MM-dd HH:mm:ss} %clr(%5p) [%thread] %clr(%logger){cyan} %X{mdc_trace_id}: %msg%n'
+#    console: '%date{yyyy-MM-dd HH:mm:ss} [%-5level] [%-4relative] [%15.15thread] [%-40.40logger{39}] [%X{mdc_trace_id}]: %msg%n'

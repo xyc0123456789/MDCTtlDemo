@@ -1,0 +1,27 @@
+
+spring:
+  application:
+    name: mdc-ttl-server
+    desc: server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  
+server:
+  port: 19888
+  servlet:
+    context-path: /mdc-ttl-server
+  packages: com.king
+
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+logging:
+  level:
+    org.jooq: info
+    com.alibaba.nacos.client: warn
+  pattern:
+    console: '%date{yyyy-MM-dd HH:mm:ss} [%-5level] [%-4relative] [%15.15thread] [%-40.40logger{39}]  [%X{mdc_trace_id}]:%msg%n'
