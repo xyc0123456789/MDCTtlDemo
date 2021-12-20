@@ -24,16 +24,14 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
 
 ```java
 -javaagent:C:/mvn_repository/com/alibaba/transmittable-thread-local/2.10.2/transmittable-thread-local-2.10.2.jar
--javaagent:C:/mvn_repository/com/king/TtlMDCAdapterAgent/1.0-SNAPSHOT/TtlMDCAdapterAgent-1.0-SNAPSHOT.jar=com/king/MdcTtlApplication
+-javaagent:C:/mvn_repository/com/king/TtlMDCAdapterAgent/1.0-SNAPSHOT/TtlMDCAdapterAgent-1.0-SNAPSHOT.jar
 ```
 
 在命令行需要写成如下形式：
 
 ```shell
-java -Dfile.encoding=utf-8 -javaagent:C:/mvn_repository/com/alibaba/transmittable-thread-local/2.10.2/transmittable-thread-local-2.10.2.jar -javaagent:C:/mvn_repository/com/king/TtlMDCAdapterAgent/1.0-SNAPSHOT/TtlMDCAdapterAgent-1.0-SNAPSHOT.jar=com/king/MdcTtlApplication -jar mdc-ttl-server-1.0-SNAPSHOT.jar
+java -Dfile.encoding=utf-8 -javaagent:C:/mvn_repository/com/alibaba/transmittable-thread-local/2.10.2/transmittable-thread-local-2.10.2.jar -javaagent:C:/mvn_repository/com/king/TtlMDCAdapterAgent/1.0-SNAPSHOT/TtlMDCAdapterAgent-1.0-SNAPSHOT.jar -jar mdc-ttl-server-1.0-SNAPSHOT.jar
 ```
-
-**注：com/king/MdcTtlApplication为需要增强的main方法入口类类名一定要是斜杠，不能是反斜杠或者是点**
 
 4、成功启动了mdc-ttl-server和mdc-ttl-customer后，向mdc-ttl-customer发送get请求即可看到demo效果
 
