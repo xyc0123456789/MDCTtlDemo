@@ -21,10 +21,10 @@ public class TTLMDCAdapterAgent {
 
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("load TTLMDCAdapter...");
-        if (agentArgs!=null) {
-            applicationName = agentArgs;
-        }
-        inst.addTransformer(new TransformMain());
+//        if (agentArgs!=null) {
+//            applicationName = agentArgs;
+//        }
+        inst.addTransformer(new TransformMDCMain());
     }
     private static class TransformMain implements ClassFileTransformer {
         @Override
@@ -42,6 +42,27 @@ public class TTLMDCAdapterAgent {
                         "System.out.println(\"=================loaded TtlMDCAdapter SUCCESS===============\");");
                 return ctClass.toBytecode();
             }catch (Exception e){
+                System.out.println("loading TtlMDCAdapter fail...");
+                return classfileBuffer;
+            }
+        }
+    }
+    private static class TransformMDCMain implements ClassFileTransformer {
+        @Override
+        public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+            if (!className.equals("org/slf4j/MDC")) {
+                return classfileBuffer;
+            }
+            System.out.println(className);
+            try {
+                ClassPool cp = ClassPool.getDefault();
+                CtClass ctClass = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
+                CtMethod ctMethod = ctClass.getDeclaredMethod("bwCompatibleGetMDCAdapterFromBinder");
+                ctMethod.setBody("{System.out.println(\"=================loading TtlMDCAdapter===============\");" +
+                        "try {return org.slf4j.TtlMDCAdapter.getInstance();} catch (NoSuchMethodError nsme) {return org.slf4j.TtlMDCAdapter.getInstance();}}");
+                return ctClass.toBytecode();
+            }catch (Throwable e){
+                e.printStackTrace();
                 System.out.println("loading TtlMDCAdapter fail...");
                 return classfileBuffer;
             }
