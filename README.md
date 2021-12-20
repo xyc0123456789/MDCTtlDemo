@@ -45,7 +45,7 @@ java -Dfile.encoding=utf-8 -javaagent:C:/mvn_repository/com/alibaba/transmittabl
 
 由于并发时业务日志杂乱无章，没法排查故障，通过搜索看到了`org.slf4j.MDC`通过`ThreadLocal`可以实现日志上的跟踪，一般需要配合AOP。但是这个`ThreadLocal`在创建新线程后的线程内会失效，于是想到了`InheritableThreadLocal`。但是实际业务中一般都是用线程池，当线程复用时会导致这个值不正确，于是在看到了[transmittable-thread-local](https://github.com/alibaba/transmittable-thread-local)，以及logback对应实现的[logback-mdc-ttl](https://github.com/chiwenheng/logback-mdc-ttl)。
 
-1、[logback-mdc-ttl](https://github.com/chiwenheng/logback-mdc-ttl)在使用过程中并没能生效，又因为我不太看得懂logback配置的加载机制和它的spi，于是我选择用java agent对`Application`结尾的main入口进行了增强（`TtlMDCAdapterAgent`），使用的`TtlMDCAdapter`（[TtlMDCAdapter.java](https://github.com/chiwenheng/logback-mdc-ttl/blob/master/src/main/java/org/slf4j/TtlMDCAdapter.java)）替换了MDC.mdcAdapter原来的Log4jMDCAdapter。这解决了新的子线程获取不到父线程全局变量的问题。
+1、[logback-mdc-ttl](https://github.com/chiwenheng/logback-mdc-ttl)在使用过程中并没能生效，又因为我不太看得懂logback配置的加载机制和它的spi，于是我选择用java agent对`MDC.bwCompatibleGetMDCAdapterFromBinder`方法进行了替换。这解决了新的子线程获取不到父线程全局变量的问题。
 
 2、参考[transmittable-thread-local](https://github.com/alibaba/transmittable-thread-local)中的使用方法，在VM options中增加相关启动参数对线程池相关类进行增强。这解决了线程复用时全局变量不正确的问题
 
