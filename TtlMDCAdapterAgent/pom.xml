@@ -15,9 +15,19 @@
             <version>2.10.2</version>
         </dependency>
         <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.23.2-GA</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.12</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -37,14 +47,21 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
+
                         </manifest>
                         <manifestEntries>
-                            <Premain-Class>com.runwu.TTLMDCAdapterAgent</Premain-Class>
+                            <Premain-Class>com.king.TTLMDCAdapterAgent</Premain-Class>
+                            <Agent-Class>com.king.TTLMDCAdapterAgent</Agent-Class>
+<!--                            <Boot-Class-Path>${project.build.finalName}.jar</Boot-Class-Path>-->
+<!--                            <Boot-Class-Path>lib/javassist-3.23.2-GA.jar</Boot-Class-Path>-->
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
                             <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
                         </manifestEntries>
                     </archive>
+<!--                    <compilerArgs>-->
+<!--                        <arg>-Xbootclasspath/a:lib/javassist-3.23.2-GA.jar</arg>-->
+<!--                    </compilerArgs>-->
                 </configuration>
             </plugin>
         </plugins>
